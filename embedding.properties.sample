@@ -1,0 +1,61 @@
+# Embedding Service Configuration
+# 
+# This file configures the connection to the embedding service.
+# 
+# Configuration Priority:
+# 1. Environment variables (EMBEDDING_*)
+# 2. This property file
+# 3. Default hardcoded values
+#
+# Environment variables override this file's settings.
+
+# Embedding API Endpoint
+# Used to generate semantic embeddings for text chunks
+# Default: http://192.168.10.11:1234/v1/embeddings
+embedding.endpoint=http://192.168.10.11:1234/v1/embeddings
+
+# Embedding Model Name
+# Must match a model available on the embedding service
+# Default: text-embedding-mxbai-embed-large-v1
+embedding.model=text-embedding-mxbai-embed-large-v1
+
+# Request Timeout in seconds
+# How long to wait for embedding generation
+# Valid range: 1-300 seconds
+# Default: 30
+embedding.timeout=30
+
+# Connection Timeout in seconds
+# How long to wait for initial connection
+# Valid range: 1-300 seconds
+# Default: 10
+embedding.connect.timeout=10
+
+# Enable/Disable Service
+# Set to false to disable embedding generation (useful for testing)
+# Default: true
+embedding.enabled=true
+
+# ============================================
+# Development Configuration Example:
+# ============================================
+# embedding.endpoint=http://localhost:1234/v1/embeddings
+# embedding.model=text-embedding-3-small
+# embedding.timeout=60
+# embedding.enabled=true
+
+# ============================================
+# Docker Configuration Example:
+# ============================================
+# embedding.endpoint=http://embedding-service:1234/v1/embeddings
+# embedding.timeout=45
+# embedding.enabled=true
+
+# ============================================
+# Environment Variable Equivalents:
+# ============================================
+# export EMBEDDING_ENDPOINT="http://..."
+# export EMBEDDING_MODEL="..."
+# export EMBEDDING_TIMEOUT="30"
+# export EMBEDDING_CONNECT_TIMEOUT="10"
+# export EMBEDDING_ENABLED="true"

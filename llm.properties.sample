@@ -1,0 +1,92 @@
+# LLM Service Configuration
+#
+# This file configures the connection to the language model service (Ollama API).
+#
+# Configuration Priority:
+# 1. Environment variables (LLM_*)
+# 2. This property file
+# 3. Default hardcoded values
+#
+# Environment variables override this file's settings.
+
+# LLM API Endpoint
+# The base URL of your Ollama or compatible LLM service
+# Default: http://100.77.159.56:11434
+llm.endpoint=http://100.77.159.56:11434
+
+# Model Name
+# Must be a model available on the LLM service
+# Run 'ollama list' to see available models
+# Default: gemma3:4b
+llm.model=gemma3:4b
+
+# Request Timeout in seconds
+# How long to wait for model response generation
+# Larger models may need more time
+# Valid range: 10-600 seconds
+# Default: 120
+llm.timeout=120
+
+# Enable/Disable Service
+# Set to false to disable LLM response generation (useful for testing)
+# Default: true
+llm.enabled=true
+
+# ============================================
+# Development Configuration Example:
+# ============================================
+# llm.endpoint=http://localhost:11434
+# llm.model=mistral:7b
+# llm.timeout=180
+# llm.enabled=true
+
+# ============================================
+# Docker Configuration Example:
+# ============================================
+# llm.endpoint=http://llm-service:11434
+# llm.model=neural-chat:7b
+# llm.timeout=150
+# llm.enabled=true
+
+# ============================================
+# Production Configuration Example:
+# ============================================
+# llm.endpoint=https://llm-api.production.com
+# llm.model=mistral-7b-instruct
+# llm.timeout=240
+# llm.enabled=true
+
+# ============================================
+# Model Selection Guide:
+# ============================================
+# Fast/Low Resource:
+#   - mistral:7b-instruct-q4_K_M (fastest, lower quality)
+#   - neural-chat:7b-q4 (good balance)
+#   - gemma:7b-q4 (lightweight)
+#
+# Balanced:
+#   - mistral:7b (good quality/speed)
+#   - neural-chat:7b (fast, good output)
+#   - gemma3:4b (small but capable)
+#
+# High Quality:
+#   - mistral:13b (slower, better)
+#   - llama2:13b (chatty, detailed)
+#   - neural-chat:13b (slower but comprehensive)
+
+# ============================================
+# Environment Variable Equivalents:
+# ============================================
+# export LLM_ENDPOINT="http://..."
+# export LLM_MODEL="..."
+# export LLM_TIMEOUT="120"
+# export LLM_ENABLED="true"
+
+# ============================================
+# Timeout Guidelines:
+# ============================================
+# Small models (4B-7B): 60-120 seconds
+# Medium models (13B): 120-180 seconds
+# Large models (30B+): 180-300 seconds
+# With GPU acceleration: reduce by 30-50%
+# On CPU: increase by 50-100%

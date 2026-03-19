@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rag
+Bundle-SymbolicName: org.simple.rag
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.simple.rag.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-22
+Automatic-Module-Name: org.simple.rag
+Bundle-ActivationPolicy: lazy

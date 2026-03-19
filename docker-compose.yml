@@ -1,0 +1,139 @@
+version: '3.8'
+
+services:
+  # Embedding Service - Generates text embeddings
+  embedding-service:
+    image: mistral/embedding-service:latest
+    container_name: rag-embedding
+    environment:
+      MODEL: text-embedding-mxbai-embed-large-v1
+      PORT: 1234
+    ports:
+      - "1234:1234"
+    volumes:
+      - embedding-cache:/root/.cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1234/v1/embeddings", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"model":"text-embedding-mxbai-embed-large-v1","input":"health"}']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+  # LLM Service - Generates responses using language models
+  llm-service:
+    image: ollama/ollama:latest
+    container_name: rag-llm
+    environment:
+      OLLAMA_DEBUG: "false"
+      OLLAMA_NUM_PARALLEL: "2"
+    ports:
+      - "11434:11434"
+    volumes:
+      - llm-models:/root/.ollama
+      - ./llm-startup.sh:/llm-startup.sh
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - rag-network
+    # Pull default model on startup
+    command: sh -c "ollama serve &
+      sleep 5 &&
+      ollama pull gemma3:4b &&
+      wait"
+
+  # Main RAG Application
+  rag-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-application
+    depends_on:
+      embedding-service:
+        condition: service_healthy
+      llm-service:
+        condition: service_healthy
+    environment:
+      EMBEDDING_ENDPOINT: http://embedding-service:1234/v1/embeddings
+      EMBEDDING_MODEL: text-embedding-mxbai-embed-large-v1
+      EMBEDDING_TIMEOUT: "30"
+      EMBEDDING_ENABLED: "true"
+      
+      LLM_ENDPOINT: http://llm-service:11434
+      LLM_MODEL: gemma3:4b
+      LLM_TIMEOUT: "120"
+      LLM_ENABLED: "true"
+      
+      JAVA_OPTS: "-Xmx2g -Xms512m"
+    ports:
+      - "9090:9090"
+    volumes:
+      # Mount configuration files
+      - ./embedding.properties:/app/embedding.properties:ro
+      - ./llm.properties:/app/llm.properties:ro
+      # Mount data directories (persist knowledge base)
+      - ./data:/app/data
+      - ./logs:/app/logs
+      # Mount knowledge base for document ingestion
+      - ./KnowledgeFolder:/app/KnowledgeFolder:ro
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    networks:
+      - rag-network
+    # Optional: limit resource usage
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+networks:
+  rag-network:
+    driver: bridge
+
+volumes:
+  embedding-cache:
+    driver: local
+  llm-models:
+    driver: local
+
+# Configuration guide:
+# 
+# To use docker-compose:
+#
+# 1. Build the application:
+#    mvn clean package
+#
+# 2. Create configuration files from samples:
+#    cp embedding.properties.sample embedding.properties
+#    cp llm.properties.sample llm.properties
+#
+# 3. Create knowledge base directory:
+#    mkdir -p KnowledgeFolder
+#    cp your_documents/*.pdf KnowledgeFolder/
+#
+# 4. Start services:
+#    docker-compose up -d
+#
+# 5. View logs:
+#    docker-compose logs -f rag-app
+#
+# 6. Access interactive mode:
+#    docker-compose exec rag-app /bin/bash
+#
+# 7. Stop services:
+#    docker-compose down
+#
+# 8. Cleanup (remove volumes):
+#    docker-compose down -v

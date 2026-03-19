@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0
+                              http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>dist</id>
+    <formats>
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>org.simple.rag-${project.version}</baseDirectory>
+
+    <!-- Include JAR and dependencies -->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+    <!-- Include main JAR -->
+    <files>
+        <file>
+            <source>${project.build.directory}/${project.build.finalName}.jar</source>
+            <outputDirectory>lib</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Configuration files -->
+        <file>
+            <source>embedding.properties.sample</source>
+            <outputDirectory>config</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>llm.properties.sample</source>
+            <outputDirectory>config</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Documentation -->
+        <file>
+            <source>README.md</source>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>DEPLOYMENT.md</source>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>LICENSE</source>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>644</fileMode>
+            <lineEnding>unix</lineEnding>
+        </file>
+    </files>
+
+    <!-- Include directories -->
+    <fileSets>
+        <!-- Create empty directories -->
+        <fileSet>
+            <directory>${project.basedir}/src</directory>
+            <outputDirectory>src</outputDirectory>
+            <excludes>
+                <exclude>**/*.class</exclude>
+                <exclude>**/target/**</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Create scripts directory -->
+        <fileSet>
+            <directory>${project.basedir}/scripts</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
+
+        <!-- Create empty directories -->
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>data</outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>logs</outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Include pom.xml for reference -->
+        <fileSet>
+            <includes>
+                <include>pom.xml</include>
+                <include>.gitignore</include>
+            </includes>
+            <fileMode>644</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>
