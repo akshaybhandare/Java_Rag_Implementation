@@ -11,14 +11,6 @@ import java.util.Objects;
 import org.json.JSONObject;
 import org.simple.rag.config.LLMConfig;
 
-/**
- * LLM Service for interacting with language models via Ollama API.
- * 
- * Handles HTTP communication with the Ollama server and manages
- * model inference with configurable timeouts and endpoints.
- * 
- * Thread-safe for concurrent requests.
- */
 public class LLMService {
 
     private LLMConfig config;
@@ -28,31 +20,14 @@ public class LLMService {
             .version(HttpClient.Version.HTTP_1_1)
             .build();
 
-    /**
-     * Create LLM service with custom configuration.
-     * 
-     * @param config The LLM configuration
-     * @throws NullPointerException if config is null
-     */
     public LLMService(LLMConfig config) {
         this.config = Objects.requireNonNull(config, "LLMConfig cannot be null");
     }
 
-    /**
-     * Create LLM service with default configuration.
-     */
     public LLMService() {
         this.config = new LLMConfig();
     }
 
-    /**
-     * Generate response from LLM for the given prompt.
-     * 
-     * @param prompt The prompt to send to the LLM
-     * @return The generated response text
-     * @throws IOException if the request fails or service is disabled
-     * @throws InterruptedException if the request is interrupted
-     */
     public String generate(String prompt) throws IOException, InterruptedException {
         if (!config.isEnabled()) {
             throw new IOException("LLM service is disabled");

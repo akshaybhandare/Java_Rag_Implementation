@@ -13,16 +13,10 @@ public class Activator {
 	
 	private Logger logger;
 	
-	/**
-	 * The constructor
-	 */
 	public Activator() {
 		this.logger = Logger.getInstance();
 	}
 
-	/**
-	 * Returns the shared instance
-	 */
 	public static Activator getDefault() {
 		if (plugin == null) {
 			plugin = new Activator();

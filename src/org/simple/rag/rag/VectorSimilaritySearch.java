@@ -7,37 +7,14 @@ import java.util.Objects;
 
 import org.simple.rag.ingestion.EmbeddedChunk;
 
-/**
- * Performs vector similarity search using cosine similarity metric.
- * 
- * Used to find the most semantically similar document chunks for a given query.
- * This is a core component of the RAG pipeline's retrieval phase.
- * 
- * The search ranks chunks by their cosine similarity to the query vector,
- * returning the top K most similar chunks.
- */
 public class VectorSimilaritySearch {
 
     private final List<EmbeddedChunk> chunks;
 
-    /**
-     * Create a new vector similarity search index.
-     * 
-     * @param chunks The list of text chunks with embeddings to search
-     * @throws NullPointerException if chunks is null
-     */
     public VectorSimilaritySearch(List<EmbeddedChunk> chunks) {
         this.chunks = Objects.requireNonNull(chunks, "Chunks cannot be null");
     }
 
-    /**
-     * Search for similar chunks based on semantic similarity.
-     * 
-     * @param queryVector The embedding vector of the query
-     * @param topK Number of top results to return
-     * @return List of chunks ranked by similarity (descending order)
-     * @throws IllegalArgumentException if vector dimensions don't match
-     */
     public List<SearchResult> search(float[] queryVector, int topK) {
         if (queryVector == null || queryVector.length == 0) {
             return Collections.emptyList();
@@ -57,16 +34,6 @@ public class VectorSimilaritySearch {
         return results.subList(0, Math.min(topK, results.size()));
     }
 
-    /**
-     * Calculate cosine similarity between two vectors.
-     * 
-     * Formula: similarity = (a · b) / (||a|| * ||b||)
-     * 
-     * @param vec1 First vector
-     * @param vec2 Second vector
-     * @return Cosine similarity score between -1 and 1
-     * @throws IllegalArgumentException if vectors have different dimensions
-     */
     private float cosineSimilarity(float[] vec1, float[] vec2) {
         if (vec1.length != vec2.length) {
             throw new IllegalArgumentException("Vectors must have the same dimension. " +
@@ -91,20 +58,11 @@ public class VectorSimilaritySearch {
         return dotProduct / denominator;
     }
 
-    /**
-     * Represents a search result with a chunk and its similarity score.
-     */
     public static class SearchResult {
 
         public final EmbeddedChunk chunk;
         public final float similarity;
 
-        /**
-         * Create a search result.
-         * 
-         * @param chunk The embedded chunk
-         * @param similarity The similarity score (0-1)
-         */
         public SearchResult(EmbeddedChunk chunk, float similarity) {
             this.chunk = Objects.requireNonNull(chunk, "Chunk cannot be null");
             this.similarity = similarity;

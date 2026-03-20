@@ -8,16 +8,6 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Properties;
 
-/**
- * Configuration for the Embedding Service.
- * 
- * Loads settings from three sources (in order of precedence):
- * 1. Environment variables (EMBEDDING_*, e.g., EMBEDDING_ENDPOINT)
- * 2. Property file (embedding.properties)
- * 3. Default hardcoded values
- * 
- * All values are validated on load to ensure correctness.
- */
 public class EmbeddingConfig {
 
     private static final String CONFIG_FILE = "embedding.properties";
@@ -26,7 +16,7 @@ public class EmbeddingConfig {
     private static final int DEFAULT_TIMEOUT_SECONDS = 30;
     private static final int DEFAULT_CONNECT_TIMEOUT_SECONDS = 10;
     private static final int MIN_TIMEOUT = 1;
-    private static final int MAX_TIMEOUT = 300; // 5 minutes
+    private static final int MAX_TIMEOUT = 300;
 
     private final String endpoint;
     private final String model;
@@ -34,9 +24,6 @@ public class EmbeddingConfig {
     private final int connectTimeoutSeconds;
     private final boolean enabled;
 
-    /**
-     * Create a new EmbeddingConfig by loading from properties and environment.
-     */
     public EmbeddingConfig() {
         Properties props = loadPropertiesFile();
         
@@ -52,9 +39,6 @@ public class EmbeddingConfig {
                 System.getenv("EMBEDDING_ENABLED"), "true"));
     }
 
-    /**
-     * Load properties from the configuration file if it exists.
-     */
     private Properties loadPropertiesFile() {
         Properties props = new Properties();
         Path configPath = Paths.get(CONFIG_FILE);
@@ -70,9 +54,6 @@ public class EmbeddingConfig {
         return props;
     }
 
-    /**
-     * Get a property value from environment or properties file.
-     */
     private String getProperty(Properties props, String propKey, String envValue, String defaultValue) {
         if (envValue != null && !envValue.isEmpty()) {
             return envValue;
@@ -81,9 +62,6 @@ public class EmbeddingConfig {
         return propValue != null ? propValue : defaultValue;
     }
 
-    /**
-     * Validate endpoint URL format.
-     */
     private String validateEndpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "Endpoint cannot be null");
         if (!endpoint.startsWith("http://") && !endpoint.startsWith("https://")) {
@@ -92,9 +70,6 @@ public class EmbeddingConfig {
         return endpoint;
     }
 
-    /**
-     * Validate model name is not empty.
-     */
     private String validateModel(String model) {
         Objects.requireNonNull(model, "Model cannot be null");
         if (model.trim().isEmpty()) {
@@ -103,9 +78,6 @@ public class EmbeddingConfig {
         return model;
     }
 
-    /**
-     * Validate timeout is within acceptable range.
-     */
     private int validateTimeout(int timeout) {
         if (timeout < MIN_TIMEOUT || timeout > MAX_TIMEOUT) {
             throw new IllegalArgumentException("Timeout must be between " + MIN_TIMEOUT +
@@ -114,39 +86,22 @@ public class EmbeddingConfig {
         return timeout;
     }
 
-    // ========== Accessors ==========
-
-    /**
-     * Get the embedding API endpoint URL.
-     */
     public String getEndpoint() {
         return endpoint;
     }
 
-    /**
-     * Get the embedding model name.
-     */
     public String getModel() {
         return model;
     }
 
-    /**
-     * Get the request timeout in seconds.
-     */
     public int getTimeoutSeconds() {
         return timeoutSeconds;
     }
 
-    /**
-     * Get the connection timeout in seconds.
-     */
     public int getConnectTimeoutSeconds() {
         return connectTimeoutSeconds;
     }
 
-    /**
-     * Check if the embedding service is enabled.
-     */
     public boolean isEnabled() {
         return enabled;
     }

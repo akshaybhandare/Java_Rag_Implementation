@@ -1,18 +1,8 @@
 package org.simple.rag;
 
-/**
- * Global constants for the RAG application.
- * 
- * These values can be overridden via environment variables or property files
- * at runtime. See EmbeddingConfig and LLMConfig for configuration management.
- * 
- * Note: This class is for legacy compatibility. Prefer using configuration
- * classes (EmbeddingConfig, LLMConfig) for proper externalized configuration.
- */
 public final class GlobalConstants {
 
     private GlobalConstants() {
-        // Prevent instantiation
     }
 
     // Directory Configuration
