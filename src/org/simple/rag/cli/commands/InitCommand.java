@@ -54,10 +54,10 @@ public class InitCommand implements Runnable {
             
             // Display information
             logger.info("\n");
-            FolderManager.displayFolderStructure();
+            //FolderManager.displayFolderStructure();
             ConfigManager.displayConfig();
             
-            logger.info("✓ Initialization complete!\n");
+            logger.info("Initialization complete!\n");
             logger.info("Next steps:");
             logger.info("  1. Place your PDF/TXT files in: " + FolderManager.getDocumentsDir());
             logger.info("  2. Run: rag ingest");

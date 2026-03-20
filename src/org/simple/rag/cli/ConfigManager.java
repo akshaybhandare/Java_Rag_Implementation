@@ -25,7 +25,7 @@ public class ConfigManager {
         File configDirectory = new File(CONFIG_DIR);
         if (!configDirectory.exists()) {
             configDirectory.mkdirs();
-            logger.info("✓ Created config directory at: " + CONFIG_DIR);
+            logger.info("Created config directory at: " + CONFIG_DIR);
         }
         
         // Create default embedding config if it doesn't exist
@@ -50,7 +50,7 @@ public class ConfigManager {
         try (FileOutputStream fos = new FileOutputStream(EMBEDDING_CONFIG)) {
             props.store(fos, "Embedding Service Configuration\n# Update endpoints and model names below");
         }
-        logger.info("✓ Created default embedding.properties at: " + EMBEDDING_CONFIG);
+        logger.info("Created default embedding.properties at: " + EMBEDDING_CONFIG);
     }
     
     private static void createDefaultLLMConfig() throws IOException {
@@ -63,7 +63,7 @@ public class ConfigManager {
         try (FileOutputStream fos = new FileOutputStream(LLM_CONFIG)) {
             props.store(fos, "LLM Service Configuration\n# Update endpoints and model names below");
         }
-        logger.info("✓ Created default llm.properties at: " + LLM_CONFIG);
+        logger.info("Created default llm.properties at: " + LLM_CONFIG);
     }
     
     public static void updateEmbeddingConfig(String endpoint, String model) throws IOException {
@@ -82,7 +82,7 @@ public class ConfigManager {
         try (FileOutputStream fos = new FileOutputStream(EMBEDDING_CONFIG)) {
             props.store(fos, "Embedding Service Configuration");
         }
-        logger.info("✓ Embedding configuration saved");
+        logger.info("Embedding configuration saved");
     }
     
     public static void updateLLMConfig(String endpoint, String model, String timeout) throws IOException {
@@ -105,7 +105,7 @@ public class ConfigManager {
         try (FileOutputStream fos = new FileOutputStream(LLM_CONFIG)) {
             props.store(fos, "LLM Service Configuration");
         }
-        logger.info("✓ LLM configuration saved");
+        logger.info("LLM configuration saved");
     }
     
     public static void displayConfig() throws IOException {

@@ -48,11 +48,11 @@ public class ConfigCommand implements Runnable {
             } else if (embeddingEndpoint != null || embeddingModel != null) {
                 logger.info("Updating embedding configuration...");
                 ConfigManager.updateEmbeddingConfig(embeddingEndpoint, embeddingModel);
-                logger.info("✓ Embedding configuration updated\n");
+                logger.info("Embedding configuration updated\n");
             } else if (llmEndpoint != null || llmModel != null || llmTimeout != null) {
                 logger.info("Updating LLM configuration...");
                 ConfigManager.updateLLMConfig(llmEndpoint, llmModel, llmTimeout);
-                logger.info("✓ LLM configuration updated\n");
+                logger.info("LLM configuration updated\n");
             } else {
                 // Default to showing config
                 ConfigManager.displayConfig();

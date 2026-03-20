@@ -93,7 +93,7 @@ public class RAGApplication {
         this.pipeline = new RAGPipeline(embeddingService, knowledgeBase, llmConfig);
         this.scanner = new Scanner(System.in);
 
-        logger.info("✓ Services initialized successfully");
+        logger.info("Services initialized successfully");
     }
 
     /**
@@ -130,7 +130,7 @@ public class RAGApplication {
         PDFFileIngester ingester = new PDFFileIngester();
         try {
             ingester.processFile();
-            logger.info("✓ Documents ingested successfully");
+            logger.info("Documents ingested successfully");
             logger.info("Knowledge base now contains: " + pipeline.getKnowledgeBase().size() + " chunks");
         } catch (Exception e) {
             logger.error("Document ingestion failed: " + e.getMessage(), e);

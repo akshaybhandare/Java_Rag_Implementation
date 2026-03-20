@@ -38,7 +38,7 @@ public class FolderManager {
         File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdirs();
-            logger.info("✓ Created " + description + " at: " + path);
+            logger.info("Created " + description + " at: " + path);
         }
     }
     
@@ -101,7 +101,7 @@ public class FolderManager {
             }
             
             writer.write(jsonArray.toString(2)); // Pretty print with 2 space indentation
-            logger.info("✓ Saved " + chunks.size() + " embedded chunks to: " + file.getAbsolutePath());
+            logger.info("Saved " + chunks.size() + " embedded chunks to: " + file.getAbsolutePath());
         } catch (IOException e) {
             logger.error("Failed to save embedded chunks: " + e.getMessage(), e);
         }
@@ -157,7 +157,7 @@ public class FolderManager {
                 chunks.add(chunk);
             }
             
-            logger.info("✓ Loaded " + chunks.size() + " embedded chunks from: " + file.getAbsolutePath());
+            logger.info("Loaded " + chunks.size() + " embedded chunks from: " + file.getAbsolutePath());
             return chunks;
         } catch (Exception e) {
             logger.error("Failed to load embedded chunks: " + e.getMessage(), e);

@@ -48,20 +48,20 @@ public class IngestCommand implements Runnable {
             logger.info("Initializing embedding service...");
             EmbeddingConfig embeddingConfig = new EmbeddingConfig();
             PDFFileIngester ingester = new PDFFileIngester();
-            logger.info("✓ Embedding service initialized\n");
+            logger.info("Embedding service initialized\n");
             
             // Process documents and save embeddings
             logger.info("Processing documents...");
             List<EmbeddedChunk> chunks = ingester.processAndGetChunks();
             if (chunks != null && !chunks.isEmpty()) {
                 FolderManager.saveEmbeddedChunks(chunks, "knowledge_base");
-                logger.info("✓ Saved " + chunks.size() + " embedded chunks to vector store");
+                logger.info("Saved " + chunks.size() + " embedded chunks to vector store");
             } else {
                 logger.warn("No chunks were generated from the documents");
             }
             
             logger.info("\n========================================");
-            logger.info("✓ Documents ingested successfully!");
+            logger.info("Documents ingested successfully!");
             logger.info("========================================");
             logger.info("\nNext: Run 'rag ask \"Your question\"' to query the documents\n");
             

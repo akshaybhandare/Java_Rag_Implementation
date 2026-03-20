@@ -53,7 +53,7 @@ public class AskCommand implements Runnable {
                 System.exit(1);
             }
             
-            logger.info("✓ Services initialized. Knowledge base: " + knowledgeBase.size() + " chunks\n");
+            logger.info("Services initialized. Knowledge base: " + knowledgeBase.size() + " chunks\n");
             
             // Create RAG pipeline
             RAGPipeline pipeline = new RAGPipeline(embeddingService, knowledgeBase);
